@@ -4,7 +4,7 @@ package graphql
 
 import (
 	"context"
-	"github.com/colachg/pallas"
+	"github.com/colachg/pallas/models"
 ) // THIS CODE IS A STARTING POINT ONLY. IT WILL NOT BE UPDATED WITH SCHEMA CHANGES.
 
 type Resolver struct{}
@@ -18,15 +18,15 @@ func (r *Resolver) Query() QueryResolver {
 
 type mutationResolver struct{ *Resolver }
 
-func (r *mutationResolver) CreateProject(ctx context.Context, input pallas.CreateProject) (*pallas.Project, error) {
+func (r *mutationResolver) CreateProject(ctx context.Context, input models.CreateProject) (*models.Project, error) {
 	panic("not implemented")
 }
-func (r *mutationResolver) UpdateProject(ctx context.Context, input pallas.UpdateProject) (*pallas.Project, error) {
+func (r *mutationResolver) UpdateProject(ctx context.Context, input models.UpdateProject) (*models.Project, error) {
 	panic("not implemented")
 }
 
 type queryResolver struct{ *Resolver }
 
-func (r *queryResolver) Projects(ctx context.Context) ([]*pallas.Project, error) {
+func (r *queryResolver) Projects(ctx context.Context) ([]*models.Project, error) {
 	panic("not implemented")
 }

@@ -12,7 +12,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
-	"github.com/colachg/pallas"
+	"github.com/colachg/pallas/models"
 	"github.com/vektah/gqlparser"
 	"github.com/vektah/gqlparser/ast"
 )
@@ -44,8 +44,8 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	Mutation struct {
-		CreateProject func(childComplexity int, input pallas.CreateProject) int
-		UpdateProject func(childComplexity int, input pallas.UpdateProject) int
+		CreateProject func(childComplexity int, input models.CreateProject) int
+		UpdateProject func(childComplexity int, input models.UpdateProject) int
 	}
 
 	Project struct {
@@ -61,11 +61,11 @@ type ComplexityRoot struct {
 }
 
 type MutationResolver interface {
-	CreateProject(ctx context.Context, input pallas.CreateProject) (*pallas.Project, error)
-	UpdateProject(ctx context.Context, input pallas.UpdateProject) (*pallas.Project, error)
+	CreateProject(ctx context.Context, input models.CreateProject) (*models.Project, error)
+	UpdateProject(ctx context.Context, input models.UpdateProject) (*models.Project, error)
 }
 type QueryResolver interface {
-	Projects(ctx context.Context) ([]*pallas.Project, error)
+	Projects(ctx context.Context) ([]*models.Project, error)
 }
 
 type executableSchema struct {
@@ -93,7 +93,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateProject(childComplexity, args["input"].(pallas.CreateProject)), true
+		return e.complexity.Mutation.CreateProject(childComplexity, args["input"].(models.CreateProject)), true
 
 	case "Mutation.updateProject":
 		if e.complexity.Mutation.UpdateProject == nil {
@@ -105,7 +105,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateProject(childComplexity, args["input"].(pallas.UpdateProject)), true
+		return e.complexity.Mutation.UpdateProject(childComplexity, args["input"].(models.UpdateProject)), true
 
 	case "Project.description":
 		if e.complexity.Project.Description == nil {
@@ -241,9 +241,9 @@ type Mutation {
 func (ec *executionContext) field_Mutation_createProject_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 pallas.CreateProject
+	var arg0 models.CreateProject
 	if tmp, ok := rawArgs["input"]; ok {
-		arg0, err = ec.unmarshalNCreateProject2githubᚗcomᚋcolachgᚋpallasᚐCreateProject(ctx, tmp)
+		arg0, err = ec.unmarshalNCreateProject2githubᚗcomᚋcolachgᚋpallasᚋmodelsᚐCreateProject(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -255,9 +255,9 @@ func (ec *executionContext) field_Mutation_createProject_args(ctx context.Contex
 func (ec *executionContext) field_Mutation_updateProject_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 pallas.UpdateProject
+	var arg0 models.UpdateProject
 	if tmp, ok := rawArgs["input"]; ok {
-		arg0, err = ec.unmarshalNUpdateProject2githubᚗcomᚋcolachgᚋpallasᚐUpdateProject(ctx, tmp)
+		arg0, err = ec.unmarshalNUpdateProject2githubᚗcomᚋcolachgᚋpallasᚋmodelsᚐUpdateProject(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -342,7 +342,7 @@ func (ec *executionContext) _Mutation_createProject(ctx context.Context, field g
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateProject(rctx, args["input"].(pallas.CreateProject))
+		return ec.resolvers.Mutation().CreateProject(rctx, args["input"].(models.CreateProject))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -354,10 +354,10 @@ func (ec *executionContext) _Mutation_createProject(ctx context.Context, field g
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*pallas.Project)
+	res := resTmp.(*models.Project)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNProject2ᚖgithubᚗcomᚋcolachgᚋpallasᚐProject(ctx, field.Selections, res)
+	return ec.marshalNProject2ᚖgithubᚗcomᚋcolachgᚋpallasᚋmodelsᚐProject(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_updateProject(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -386,7 +386,7 @@ func (ec *executionContext) _Mutation_updateProject(ctx context.Context, field g
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateProject(rctx, args["input"].(pallas.UpdateProject))
+		return ec.resolvers.Mutation().UpdateProject(rctx, args["input"].(models.UpdateProject))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -398,13 +398,13 @@ func (ec *executionContext) _Mutation_updateProject(ctx context.Context, field g
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*pallas.Project)
+	res := resTmp.(*models.Project)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNProject2ᚖgithubᚗcomᚋcolachgᚋpallasᚐProject(ctx, field.Selections, res)
+	return ec.marshalNProject2ᚖgithubᚗcomᚋcolachgᚋpallasᚋmodelsᚐProject(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Project_id(ctx context.Context, field graphql.CollectedField, obj *pallas.Project) (ret graphql.Marshaler) {
+func (ec *executionContext) _Project_id(ctx context.Context, field graphql.CollectedField, obj *models.Project) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -441,7 +441,7 @@ func (ec *executionContext) _Project_id(ctx context.Context, field graphql.Colle
 	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Project_name(ctx context.Context, field graphql.CollectedField, obj *pallas.Project) (ret graphql.Marshaler) {
+func (ec *executionContext) _Project_name(ctx context.Context, field graphql.CollectedField, obj *models.Project) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -478,7 +478,7 @@ func (ec *executionContext) _Project_name(ctx context.Context, field graphql.Col
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Project_version(ctx context.Context, field graphql.CollectedField, obj *pallas.Project) (ret graphql.Marshaler) {
+func (ec *executionContext) _Project_version(ctx context.Context, field graphql.CollectedField, obj *models.Project) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -515,7 +515,7 @@ func (ec *executionContext) _Project_version(ctx context.Context, field graphql.
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Project_description(ctx context.Context, field graphql.CollectedField, obj *pallas.Project) (ret graphql.Marshaler) {
+func (ec *executionContext) _Project_description(ctx context.Context, field graphql.CollectedField, obj *models.Project) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -543,10 +543,10 @@ func (ec *executionContext) _Project_description(ctx context.Context, field grap
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.(*string)
+	res := resTmp.(string)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+	return ec.marshalOString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_projects(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -580,10 +580,10 @@ func (ec *executionContext) _Query_projects(ctx context.Context, field graphql.C
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*pallas.Project)
+	res := resTmp.([]*models.Project)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNProject2ᚕᚖgithubᚗcomᚋcolachgᚋpallasᚐProjectᚄ(ctx, field.Selections, res)
+	return ec.marshalNProject2ᚕᚖgithubᚗcomᚋcolachgᚋpallasᚋmodelsᚐProjectᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -1812,8 +1812,8 @@ func (ec *executionContext) ___Type_ofType(ctx context.Context, field graphql.Co
 
 // region    **************************** input.gotpl *****************************
 
-func (ec *executionContext) unmarshalInputCreateProject(ctx context.Context, obj interface{}) (pallas.CreateProject, error) {
-	var it pallas.CreateProject
+func (ec *executionContext) unmarshalInputCreateProject(ctx context.Context, obj interface{}) (models.CreateProject, error) {
+	var it models.CreateProject
 	var asMap = obj.(map[string]interface{})
 
 	for k, v := range asMap {
@@ -1842,8 +1842,8 @@ func (ec *executionContext) unmarshalInputCreateProject(ctx context.Context, obj
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputUpdateProject(ctx context.Context, obj interface{}) (pallas.UpdateProject, error) {
-	var it pallas.UpdateProject
+func (ec *executionContext) unmarshalInputUpdateProject(ctx context.Context, obj interface{}) (models.UpdateProject, error) {
+	var it models.UpdateProject
 	var asMap = obj.(map[string]interface{})
 
 	for k, v := range asMap {
@@ -1924,7 +1924,7 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 
 var projectImplementors = []string{"Project"}
 
-func (ec *executionContext) _Project(ctx context.Context, sel ast.SelectionSet, obj *pallas.Project) graphql.Marshaler {
+func (ec *executionContext) _Project(ctx context.Context, sel ast.SelectionSet, obj *models.Project) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.RequestContext, sel, projectImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -2264,7 +2264,7 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) unmarshalNCreateProject2githubᚗcomᚋcolachgᚋpallasᚐCreateProject(ctx context.Context, v interface{}) (pallas.CreateProject, error) {
+func (ec *executionContext) unmarshalNCreateProject2githubᚗcomᚋcolachgᚋpallasᚋmodelsᚐCreateProject(ctx context.Context, v interface{}) (models.CreateProject, error) {
 	return ec.unmarshalInputCreateProject(ctx, v)
 }
 
@@ -2282,11 +2282,11 @@ func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.Selec
 	return res
 }
 
-func (ec *executionContext) marshalNProject2githubᚗcomᚋcolachgᚋpallasᚐProject(ctx context.Context, sel ast.SelectionSet, v pallas.Project) graphql.Marshaler {
+func (ec *executionContext) marshalNProject2githubᚗcomᚋcolachgᚋpallasᚋmodelsᚐProject(ctx context.Context, sel ast.SelectionSet, v models.Project) graphql.Marshaler {
 	return ec._Project(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNProject2ᚕᚖgithubᚗcomᚋcolachgᚋpallasᚐProjectᚄ(ctx context.Context, sel ast.SelectionSet, v []*pallas.Project) graphql.Marshaler {
+func (ec *executionContext) marshalNProject2ᚕᚖgithubᚗcomᚋcolachgᚋpallasᚋmodelsᚐProjectᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.Project) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -2310,7 +2310,7 @@ func (ec *executionContext) marshalNProject2ᚕᚖgithubᚗcomᚋcolachgᚋpalla
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNProject2ᚖgithubᚗcomᚋcolachgᚋpallasᚐProject(ctx, sel, v[i])
+			ret[i] = ec.marshalNProject2ᚖgithubᚗcomᚋcolachgᚋpallasᚋmodelsᚐProject(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -2323,7 +2323,7 @@ func (ec *executionContext) marshalNProject2ᚕᚖgithubᚗcomᚋcolachgᚋpalla
 	return ret
 }
 
-func (ec *executionContext) marshalNProject2ᚖgithubᚗcomᚋcolachgᚋpallasᚐProject(ctx context.Context, sel ast.SelectionSet, v *pallas.Project) graphql.Marshaler {
+func (ec *executionContext) marshalNProject2ᚖgithubᚗcomᚋcolachgᚋpallasᚋmodelsᚐProject(ctx context.Context, sel ast.SelectionSet, v *models.Project) graphql.Marshaler {
 	if v == nil {
 		if !ec.HasError(graphql.GetResolverContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
@@ -2347,7 +2347,7 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 	return res
 }
 
-func (ec *executionContext) unmarshalNUpdateProject2githubᚗcomᚋcolachgᚋpallasᚐUpdateProject(ctx context.Context, v interface{}) (pallas.UpdateProject, error) {
+func (ec *executionContext) unmarshalNUpdateProject2githubᚗcomᚋcolachgᚋpallasᚋmodelsᚐUpdateProject(ctx context.Context, v interface{}) (models.UpdateProject, error) {
 	return ec.unmarshalInputUpdateProject(ctx, v)
 }
 

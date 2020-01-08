@@ -8,7 +8,10 @@ schema:
 exec:
   filename: graphql/generated.go
 model:
-  filename: models_gen.go
+  filename: models/models_gen.go
+models:
+  Project:
+    model: github.com/colachg/pallas/models.Project
 resolver:
   filename: graphql/resolver.go
   type: Resolver
