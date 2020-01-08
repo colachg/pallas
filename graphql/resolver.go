@@ -18,10 +18,15 @@ func (r *Resolver) Query() QueryResolver {
 
 type mutationResolver struct{ *Resolver }
 
-func (r *mutationResolver) CreateProject(ctx context.Context, input models.CreateProject) (*models.Project, error) {
-	panic("not implemented")
+func (r *mutationResolver) UpdateProject(ctx context.Context, id string, input models.UpdateProject) (*models.Project, error) {
+	panic("implement me")
 }
-func (r *mutationResolver) UpdateProject(ctx context.Context, input models.UpdateProject) (*models.Project, error) {
+
+func (r *mutationResolver) DeleteProject(ctx context.Context, id *string) (bool, error) {
+	panic("implement me")
+}
+
+func (r *mutationResolver) CreateProject(ctx context.Context, input models.CreateProject) (*models.Project, error) {
 	panic("not implemented")
 }
 
