@@ -25,5 +25,5 @@ type Query {
 type Mutation {
     createProject(input: CreateProject!): Project!
     updateProject(id: ID!, input: UpdateProject!): Project!
-    deleteProject(id:ID): Boolean!
+    deleteProject(id:ID!): Boolean!
 }

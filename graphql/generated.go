@@ -45,7 +45,7 @@ type DirectiveRoot struct {
 type ComplexityRoot struct {
 	Mutation struct {
 		CreateProject func(childComplexity int, input models.CreateProject) int
-		DeleteProject func(childComplexity int, id *string) int
+		DeleteProject func(childComplexity int, id string) int
 		UpdateProject func(childComplexity int, id string, input models.UpdateProject) int
 	}
 
@@ -64,7 +64,7 @@ type ComplexityRoot struct {
 type MutationResolver interface {
 	CreateProject(ctx context.Context, input models.CreateProject) (*models.Project, error)
 	UpdateProject(ctx context.Context, id string, input models.UpdateProject) (*models.Project, error)
-	DeleteProject(ctx context.Context, id *string) (bool, error)
+	DeleteProject(ctx context.Context, id string) (bool, error)
 }
 type QueryResolver interface {
 	Projects(ctx context.Context) ([]*models.Project, error)
@@ -107,7 +107,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.DeleteProject(childComplexity, args["id"].(*string)), true
+		return e.complexity.Mutation.DeleteProject(childComplexity, args["id"].(string)), true
 
 	case "Mutation.updateProject":
 		if e.complexity.Mutation.UpdateProject == nil {
@@ -245,8 +245,7 @@ type Query {
 type Mutation {
     createProject(input: CreateProject!): Project!
     updateProject(id: ID!, input: UpdateProject!): Project!
-    deleteProject(id:ID): Boolean!
-
+    deleteProject(id:ID!): Boolean!
 }`},
 )
 
@@ -271,9 +270,9 @@ func (ec *executionContext) field_Mutation_createProject_args(ctx context.Contex
 func (ec *executionContext) field_Mutation_deleteProject_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 *string
+	var arg0 string
 	if tmp, ok := rawArgs["id"]; ok {
-		arg0, err = ec.unmarshalOID2ᚖstring(ctx, tmp)
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -468,7 +467,7 @@ func (ec *executionContext) _Mutation_deleteProject(ctx context.Context, field g
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().DeleteProject(rctx, args["id"].(*string))
+		return ec.resolvers.Mutation().DeleteProject(rctx, args["id"].(string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2685,29 +2684,6 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 		return graphql.Null
 	}
 	return ec.marshalOBoolean2bool(ctx, sel, *v)
-}
-
-func (ec *executionContext) unmarshalOID2string(ctx context.Context, v interface{}) (string, error) {
-	return graphql.UnmarshalID(v)
-}
-
-func (ec *executionContext) marshalOID2string(ctx context.Context, sel ast.SelectionSet, v string) graphql.Marshaler {
-	return graphql.MarshalID(v)
-}
-
-func (ec *executionContext) unmarshalOID2ᚖstring(ctx context.Context, v interface{}) (*string, error) {
-	if v == nil {
-		return nil, nil
-	}
-	res, err := ec.unmarshalOID2string(ctx, v)
-	return &res, err
-}
-
-func (ec *executionContext) marshalOID2ᚖstring(ctx context.Context, sel ast.SelectionSet, v *string) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return ec.marshalOID2string(ctx, sel, *v)
 }
 
 func (ec *executionContext) unmarshalOString2string(ctx context.Context, v interface{}) (string, error) {

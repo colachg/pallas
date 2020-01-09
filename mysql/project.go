@@ -3,6 +3,7 @@ package mysql
 import (
 	"github.com/colachg/pallas/models"
 	"github.com/jinzhu/gorm"
+	"log"
 )
 
 type ProjectRepo struct {
@@ -10,8 +11,6 @@ type ProjectRepo struct {
 }
 
 func (p *ProjectRepo) GetProjects() ([]*models.Project, error) {
-
-	projects := p.DB.Find(&models.Project{})
 	return nil, nil
 }
 
@@ -19,9 +18,14 @@ func (p *ProjectRepo) GetByID(id string) (*models.Project, error) {
 	return nil, nil
 }
 
+//Todo: generate ID automatically
 func (p *ProjectRepo) CreateProject(project *models.Project) (*models.Project, error) {
-	p.DB.NewRecord(project)
-	p.DB.CreateTable(project)
+	err := p.DB.Create(project).Error
+
+	if err != nil {
+		log.Println("create project error:", err)
+		return nil, err
+	}
 	return project, nil
 }
 
