@@ -23,7 +23,7 @@ func (p *ProjectRepo) CreateProject(project *models.Project) (*models.Project, e
 	err := p.DB.Create(project).Error
 
 	if err != nil {
-		log.Println("create project error:", err)
+		log.Println("2.create project error:", err)
 		return nil, err
 	}
 	return project, nil

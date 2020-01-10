@@ -1,8 +1,12 @@
+scalar Time
+
 type Project {
     id: ID!
     name: String!
     version: String!
     description: String
+    createAt: Time!
+    updateAt: Time!
 }
 
 input CreateProject {
