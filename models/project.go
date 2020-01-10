@@ -1,9 +1,8 @@
 package models
 
 type Project struct {
-	//gorm.Model
-	ID          string
-	Name        string
-	Version     string
-	Description string
+	ID          string  `json:"id"`
+	Name        string  `json:"name"`
+	Version     string  `json:"version"`
+	Description *string `json:"description"`
 }

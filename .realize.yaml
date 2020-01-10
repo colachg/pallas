@@ -1,0 +1,29 @@
+settings:
+  legacy:
+    force: false
+    interval: 1s
+schema:
+- name: pallas
+  path: /home/developer/go/src/github.com/colachg/pallas/server
+  commands:
+    clean:
+      status: true
+    fmt:
+      status: true
+    generate:
+      status: true
+    install:
+      status: true
+    run:
+      status: true
+  watcher:
+    extensions:
+    - go
+    - graphql
+    paths:
+    - ../
+    ignore:
+      paths:
+      - .git
+      - .realize
+      - vendor

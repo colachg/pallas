@@ -15,7 +15,7 @@ func (m *mutationResolver) CreateProject(ctx context.Context, input models.Creat
 	project := &models.Project{
 		Name:        input.Name,
 		Version:     input.Version,
-		Description: *input.Description,
+		Description: input.Description,
 	}
 	return m.ProjectRepo.CreateProject(project)
 }
