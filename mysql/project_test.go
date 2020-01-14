@@ -1,37 +1,73 @@
 package mysql
 
 import (
+	"database/sql"
 	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/colachg/pallas/models"
+	"github.com/jinzhu/gorm"
+	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/suite"
 	"testing"
+	"time"
 )
 
-func TestGetProjects(t *testing.T) {
+type Suite struct {
+	suite.Suite
+	DB   *gorm.DB
+	mock sqlmock.Sqlmock
+
+	repository ProjectRepo
+	project    models.Project
 }
 
-func TestGetByID(t *testing.T) {}
+func (s *Suite) SetupSuite() {
+	var (
+		db  *sql.DB
+		err error
+	)
 
-func TestCreateProject(t *testing.T) {
-	db, mock, err := sqlmock.New()
-	if err != nil {
-		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
-	}
-	defer db.Close()
+	db, s.mock, err = sqlmock.New()
+	require.NoError(s.T(), err)
 
-	mock.ExpectExec("INSERT INTO projects").
-		WithArgs("A", "v20200113").
-		WillReturnResult(sqlmock.NewResult(1, 1))
+	s.DB, err = gorm.Open("mysql", db)
+	require.NoError(s.T(), err)
 
-	_, err = db.Exec("INSERT INTO projects(name, version) VALUES (?, ?)", "A", "v20200113")
-	if err != nil {
-		t.Errorf("error '%s' was not expected, while inserting a row", err)
-	}
+	s.DB.LogMode(true)
 
-	if err := mock.ExpectationsWereMet(); err != nil {
-		t.Errorf("there were unfulfilled expectations: %s", err)
-	}
-
+	s.repository = ProjectRepo{DB: s.DB}
 }
 
-func TestUpdateProject(t *testing.T) {}
+func (s *Suite) AfterTest(_, _ string) {
+	require.NoError(s.T(), s.mock.ExpectationsWereMet())
+}
 
-func TestDeleteProject(t *testing.T) {}
+func TestInit(t *testing.T) {
+	suite.Run(t, new(Suite))
+}
+
+func (s *Suite) TestProjectRepo_CreateProject() {
+	var (
+		t1        = time.Now()
+		name      = "A"
+		version   = "v20200114"
+		createdAt = t1
+		updatedAt = t1
+	)
+
+	project := models.Project{
+		Name:      name,
+		Version:   version,
+		CreatedAt: t1,
+		UpdatedAt: t1,
+	}
+
+	s.mock.ExpectBegin()
+	s.mock.ExpectExec("INSERT INTO `projects`").
+		WithArgs(name, version, createdAt, updatedAt).
+		WillReturnResult(
+			sqlmock.NewResult(1, 1))
+	s.mock.ExpectCommit()
+
+	_, err := s.repository.CreateProject(&project)
+	require.NoError(s.T(), err)
+}

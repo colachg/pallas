@@ -11,11 +11,11 @@ type ProjectRepo struct {
 }
 
 func (p *ProjectRepo) GetProjects() ([]*models.Project, error) {
-
 	var projects []*models.Project
+
 	err := p.DB.LogMode(true).Find(&projects).Error
 	if err != nil {
-		log.Fatal("get project error:", err)
+		log.Fatal("Get project error:", err)
 		return nil, err
 	}
 	return projects, nil
