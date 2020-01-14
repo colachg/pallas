@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/colachg/pallas/graphql"
-	"github.com/colachg/pallas/models"
 	"github.com/colachg/pallas/mysql"
 	"github.com/jinzhu/gorm"
 	"log"
@@ -26,7 +25,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	}
-	db.Debug().AutoMigrate(&models.Project{})
+	//db.Debug().AutoMigrate(&models.Project{})
 
 	port := os.Getenv("PORT")
 	if port == "" {

@@ -11,19 +11,24 @@ type ProjectRepo struct {
 }
 
 func (p *ProjectRepo) GetProjects() ([]*models.Project, error) {
-	return nil, nil
+
+	var projects []*models.Project
+	err := p.DB.LogMode(true).Find(&projects).Error
+	if err != nil {
+		log.Fatal("get project error:", err)
+		return nil, err
+	}
+	return projects, nil
 }
 
 func (p *ProjectRepo) GetByID(id string) (*models.Project, error) {
 	return nil, nil
 }
 
-//Todo: generate ID automatically
 func (p *ProjectRepo) CreateProject(project *models.Project) (*models.Project, error) {
-	err := p.DB.Create(project).Error
-
+	err := p.DB.LogMode(true).Create(project).Error
 	if err != nil {
-		log.Println("2.create project error:", err)
+		log.Fatal("create project error:", err)
 		return nil, err
 	}
 	return project, nil

@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/99designs/gqlgen v0.10.2
+	github.com/DATA-DOG/go-sqlmock v1.4.0
 	github.com/hashicorp/golang-lru v0.5.1 // indirect
 	github.com/jinzhu/gorm v1.9.12
 	github.com/stretchr/testify v1.4.0 // indirect

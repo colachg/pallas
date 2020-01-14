@@ -51,12 +51,11 @@ type ComplexityRoot struct {
 	}
 
 	Project struct {
-		CreateAt    func(childComplexity int) int
-		Description func(childComplexity int) int
-		ID          func(childComplexity int) int
-		Name        func(childComplexity int) int
-		UpdateAt    func(childComplexity int) int
-		Version     func(childComplexity int) int
+		CreatedAt func(childComplexity int) int
+		ID        func(childComplexity int) int
+		Name      func(childComplexity int) int
+		UpdatedAt func(childComplexity int) int
+		Version   func(childComplexity int) int
 	}
 
 	Query struct {
@@ -124,19 +123,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.UpdateProject(childComplexity, args["id"].(string), args["input"].(models.UpdateProject)), true
 
-	case "Project.createAt":
-		if e.complexity.Project.CreateAt == nil {
+	case "Project.createdAt":
+		if e.complexity.Project.CreatedAt == nil {
 			break
 		}
 
-		return e.complexity.Project.CreateAt(childComplexity), true
-
-	case "Project.description":
-		if e.complexity.Project.Description == nil {
-			break
-		}
-
-		return e.complexity.Project.Description(childComplexity), true
+		return e.complexity.Project.CreatedAt(childComplexity), true
 
 	case "Project.id":
 		if e.complexity.Project.ID == nil {
@@ -152,12 +144,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Project.Name(childComplexity), true
 
-	case "Project.updateAt":
-		if e.complexity.Project.UpdateAt == nil {
+	case "Project.updatedAt":
+		if e.complexity.Project.UpdatedAt == nil {
 			break
 		}
 
-		return e.complexity.Project.UpdateAt(childComplexity), true
+		return e.complexity.Project.UpdatedAt(childComplexity), true
 
 	case "Project.version":
 		if e.complexity.Project.Version == nil {
@@ -238,25 +230,22 @@ var parsedSchema = gqlparser.MustLoadSchema(
 	&ast.Source{Name: "schema.graphql", Input: `scalar Time
 
 type Project {
-    id: ID!
+    id: Int!
     name: String!
     version: String!
-    description: String
-    createAt: Time!
-    updateAt: Time!
+    createdAt: Time!
+    updatedAt: Time!
 }
 
 input CreateProject {
     name: String!
     version: String!
-    description: String
 }
 
 input UpdateProject {
     id: ID!
     name: String!
     version: String!
-    description: String
 }
 
 type Query {
@@ -537,10 +526,10 @@ func (ec *executionContext) _Project_id(ctx context.Context, field graphql.Colle
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(int)
 	rctx.Result = res
 	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalNID2string(ctx, field.Selections, res)
+	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Project_name(ctx context.Context, field graphql.CollectedField, obj *models.Project) (ret graphql.Marshaler) {
@@ -617,7 +606,7 @@ func (ec *executionContext) _Project_version(ctx context.Context, field graphql.
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Project_description(ctx context.Context, field graphql.CollectedField, obj *models.Project) (ret graphql.Marshaler) {
+func (ec *executionContext) _Project_createdAt(ctx context.Context, field graphql.CollectedField, obj *models.Project) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -636,41 +625,7 @@ func (ec *executionContext) _Project_description(ctx context.Context, field grap
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Description, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.(*string)
-	rctx.Result = res
-	ctx = ec.Tracer.StartFieldChildExecution(ctx)
-	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Project_createAt(ctx context.Context, field graphql.CollectedField, obj *models.Project) (ret graphql.Marshaler) {
-	ctx = ec.Tracer.StartFieldExecution(ctx, field)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-		ec.Tracer.EndFieldExecution(ctx)
-	}()
-	rctx := &graphql.ResolverContext{
-		Object:   "Project",
-		Field:    field,
-		Args:     nil,
-		IsMethod: false,
-	}
-	ctx = graphql.WithResolverContext(ctx, rctx)
-	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.CreateAt, nil
+		return obj.CreatedAt, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -688,7 +643,7 @@ func (ec *executionContext) _Project_createAt(ctx context.Context, field graphql
 	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Project_updateAt(ctx context.Context, field graphql.CollectedField, obj *models.Project) (ret graphql.Marshaler) {
+func (ec *executionContext) _Project_updatedAt(ctx context.Context, field graphql.CollectedField, obj *models.Project) (ret graphql.Marshaler) {
 	ctx = ec.Tracer.StartFieldExecution(ctx, field)
 	defer func() {
 		if r := recover(); r != nil {
@@ -707,7 +662,7 @@ func (ec *executionContext) _Project_updateAt(ctx context.Context, field graphql
 	ctx = ec.Tracer.StartFieldResolverExecution(ctx, rctx)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.UpdateAt, nil
+		return obj.UpdatedAt, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2006,12 +1961,6 @@ func (ec *executionContext) unmarshalInputCreateProject(ctx context.Context, obj
 			if err != nil {
 				return it, err
 			}
-		case "description":
-			var err error
-			it.Description, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
 		}
 	}
 
@@ -2039,12 +1988,6 @@ func (ec *executionContext) unmarshalInputUpdateProject(ctx context.Context, obj
 		case "version":
 			var err error
 			it.Version, err = ec.unmarshalNString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "description":
-			var err error
-			it.Description, err = ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -2129,15 +2072,13 @@ func (ec *executionContext) _Project(ctx context.Context, sel ast.SelectionSet, 
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "description":
-			out.Values[i] = ec._Project_description(ctx, field, obj)
-		case "createAt":
-			out.Values[i] = ec._Project_createAt(ctx, field, obj)
+		case "createdAt":
+			out.Values[i] = ec._Project_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "updateAt":
-			out.Values[i] = ec._Project_updateAt(ctx, field, obj)
+		case "updatedAt":
+			out.Values[i] = ec._Project_updatedAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -2465,6 +2406,20 @@ func (ec *executionContext) unmarshalNID2string(ctx context.Context, v interface
 
 func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.SelectionSet, v string) graphql.Marshaler {
 	res := graphql.MarshalID(v)
+	if res == graphql.Null {
+		if !ec.HasError(graphql.GetResolverContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+	}
+	return res
+}
+
+func (ec *executionContext) unmarshalNInt2int(ctx context.Context, v interface{}) (int, error) {
+	return graphql.UnmarshalInt(v)
+}
+
+func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.SelectionSet, v int) graphql.Marshaler {
+	res := graphql.MarshalInt(v)
 	if res == graphql.Null {
 		if !ec.HasError(graphql.GetResolverContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")

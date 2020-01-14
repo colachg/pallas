@@ -2,7 +2,6 @@ package graphql
 
 import (
 	"context"
-	"fmt"
 	"github.com/colachg/pallas/models"
 )
 
@@ -14,11 +13,9 @@ func (r *Resolver) Mutation() MutationResolver {
 
 func (m *mutationResolver) CreateProject(ctx context.Context, input models.CreateProject) (*models.Project, error) {
 	project := &models.Project{
-		Name:        input.Name,
-		Version:     input.Version,
-		Description: input.Description,
+		Name:    input.Name,
+		Version: input.Version,
 	}
-	fmt.Println("1.---------->", project)
 	return m.ProjectRepo.CreateProject(project)
 }
 

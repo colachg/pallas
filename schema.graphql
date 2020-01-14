@@ -1,25 +1,22 @@
 scalar Time
 
 type Project {
-    id: ID!
+    id: Int!
     name: String!
     version: String!
-    description: String
-    createAt: Time!
-    updateAt: Time!
+    createdAt: Time!
+    updatedAt: Time!
 }
 
 input CreateProject {
     name: String!
     version: String!
-    description: String
 }
 
 input UpdateProject {
     id: ID!
     name: String!
     version: String!
-    description: String
 }
 
 type Query {

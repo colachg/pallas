@@ -1,6 +1,8 @@
-CREATE [IF NOT EXISTS] projects (
+/*Todo: add to main func */
+CREATE TABLE IF NOT EXISTS projects (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    version VARCHAR(255) NOT NULL,
-    description VARCHAR(255),
+    version varchar(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

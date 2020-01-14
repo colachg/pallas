@@ -13,3 +13,4 @@ Todo
 
 ## Database tools
 1. `migrate create -ext sql -dir mysql/migrations create_projects`
+2. `migrate -source file://path/to/migrations -database mysql://user:password@tcp(host:port)/dbname up`
