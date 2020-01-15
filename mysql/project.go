@@ -50,6 +50,13 @@ func (p *ProjectRepo) UpdateProject(project *models.Project) (*models.Project, e
 	return project, nil
 }
 
-func (p *ProjectRepo) Delete(project *models.Project) error {
-	return nil
+func (p *ProjectRepo) DeleteProject(id int) (bool, error) {
+	project := &models.Project{}
+
+	err := p.DB.Where("id = ?", id).Delete(project).Error
+	if err != nil {
+		log.Fatal("Delete project error:", err)
+		return false, err
+	}
+	return true, nil
 }

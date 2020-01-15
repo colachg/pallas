@@ -3,6 +3,7 @@ package graphql
 import (
 	"context"
 	"github.com/colachg/pallas/models"
+	"strconv"
 )
 
 type mutationResolver struct{ *Resolver }
@@ -20,9 +21,16 @@ func (m *mutationResolver) CreateProject(ctx context.Context, input models.Creat
 }
 
 func (m *mutationResolver) UpdateProject(ctx context.Context, id string, input models.UpdateProject) (*models.Project, error) {
-	panic("implement me")
+	ID, _ := strconv.Atoi(id)
+	project := &models.Project{
+		ID:      ID,
+		Name:    input.Name,
+		Version: input.Version,
+	}
+	return m.ProjectRepo.UpdateProject(project)
 }
 
 func (m *mutationResolver) DeleteProject(ctx context.Context, id string) (bool, error) {
-	panic("implement me")
+	ID, _ := strconv.Atoi(id)
+	return m.ProjectRepo.DeleteProject(ID)
 }

@@ -14,7 +14,6 @@ input CreateProject {
 }
 
 input UpdateProject {
-    id: ID!
     name: String!
     version: String!
 }

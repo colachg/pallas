@@ -24,6 +24,7 @@ schema:
     - ../
     ignore:
       paths:
+      - .idea
       - .git
       - .realize
       - vendor

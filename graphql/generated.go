@@ -243,7 +243,6 @@ input CreateProject {
 }
 
 input UpdateProject {
-    id: ID!
     name: String!
     version: String!
 }
@@ -1973,12 +1972,6 @@ func (ec *executionContext) unmarshalInputUpdateProject(ctx context.Context, obj
 
 	for k, v := range asMap {
 		switch k {
-		case "id":
-			var err error
-			it.ID, err = ec.unmarshalNID2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
 		case "name":
 			var err error
 			it.Name, err = ec.unmarshalNString2string(ctx, v)

@@ -126,3 +126,17 @@ func (s *Suite) TestProjectRepo_UpdateProject() {
 	require.Nil(s.T(), deep.Equal(project, p2))
 
 }
+
+func (s *Suite) TestProjectRepo_DeleteProject() {
+	sql := "DELETE FROM `projects` WHERE (id = ?)"
+
+	s.mock.ExpectBegin()
+	s.mock.ExpectExec(fixedSql(sql)).
+		WithArgs(p2.ID).
+		WillReturnResult(sqlmock.NewResult(1, 1))
+	s.mock.ExpectCommit()
+
+	result, err := s.repository.DeleteProject(p2.ID)
+	require.NoError(s.T(), err)
+	require.Nil(s.T(), deep.Equal(true, result))
+}
