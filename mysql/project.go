@@ -15,27 +15,39 @@ func (p *ProjectRepo) GetProjects() ([]*models.Project, error) {
 
 	err := p.DB.LogMode(true).Find(&projects).Error
 	if err != nil {
-		log.Fatal("Get project error:", err)
+		log.Fatal("Get projects error:", err)
 		return nil, err
 	}
 	return projects, nil
 }
 
 func (p *ProjectRepo) GetByID(id string) (*models.Project, error) {
-	return nil, nil
+
+	project := &models.Project{}
+	err := p.DB.LogMode(true).Where("id = ?", id).First(project).Error
+	if err != nil {
+		log.Fatal("Get project by ID error:", err)
+		return nil, err
+	}
+	return project, nil
 }
 
 func (p *ProjectRepo) CreateProject(project *models.Project) (*models.Project, error) {
 	err := p.DB.LogMode(true).Create(project).Error
 	if err != nil {
-		log.Fatal("create project error:", err)
+		log.Fatal("Create project error:", err)
 		return nil, err
 	}
 	return project, nil
 }
 
 func (p *ProjectRepo) UpdateProject(project *models.Project) (*models.Project, error) {
-	return nil, nil
+	err := p.DB.LogMode(true).Model(project).Update(project).Error
+	if err != nil {
+		log.Fatal("Update project error:", err)
+		return nil, err
+	}
+	return project, nil
 }
 
 func (p *ProjectRepo) Delete(project *models.Project) error {
