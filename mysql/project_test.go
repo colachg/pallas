@@ -31,7 +31,37 @@ var (
 		CreatedAt: t1,
 		UpdatedAt: t1,
 	}
+
+	p3 = &models.Project{
+		ID:        2,
+		Name:      "C",
+		Version:   "v20200115",
+		CreatedAt: t1,
+		UpdatedAt: t1,
+	}
 )
+
+func fixedSql(s string) string {
+	return fmt.Sprintf("^%s$", regexp.QuoteMeta(s))
+}
+
+func mockExecSql(s *Suite, sql string, args ...driver.Value) {
+	s.mock.ExpectBegin()
+	s.mock.ExpectExec(fixedSql(sql)).
+		WithArgs(args...).
+		WillReturnResult(
+			sqlmock.NewResult(1, 1))
+	s.mock.ExpectCommit()
+}
+
+func mockQuerySql(s *Suite, sql string, fields []string, projects []*models.Project) {
+	rows := sqlmock.NewRows(fields)
+
+	for _, p := range projects {
+		rows.AddRow(p.ID, p.Name, p.Version, p.CreatedAt, p.UpdatedAt)
+	}
+	s.mock.ExpectQuery(fixedSql(sql)).WillReturnRows(rows)
+}
 
 type Suite struct {
 	suite.Suite
@@ -66,55 +96,32 @@ func TestProjectRepo(t *testing.T) {
 	suite.Run(t, new(Suite))
 }
 
-func fixedSql(s string) string {
-	return fmt.Sprintf("^%s$", regexp.QuoteMeta(s))
-}
-
-func mockExecSql(s *Suite, sql string, args ...driver.Value) {
-	s.mock.ExpectBegin()
-	s.mock.ExpectExec(fixedSql(sql)).
-		WithArgs(args...).
-		WillReturnResult(
-			sqlmock.NewResult(1, 1))
-	s.mock.ExpectCommit()
-}
-
 func (s *Suite) TestProjectRepo_CreateProject() {
-	sql := "INSERT INTO `projects` (`name`,`version`,`created_at`,`updated_at`) VALUES (?,?,?,?)"
+	sqs := "INSERT INTO `projects` (`name`,`version`,`created_at`,`updated_at`) VALUES (?,?,?,?)"
 	args := []driver.Value{p1.Name, p1.Version, p1.CreatedAt, p1.UpdatedAt}
-	mockExecSql(s, sql, args...)
+	mockExecSql(s, sqs, args...)
 
 	p2, err := s.repository.CreateProject(p1)
 	require.NoError(s.T(), err)
 	require.Nil(s.T(), deep.Equal(p1, p2))
 }
 
-func mockQuerySql(s *Suite, sql string, fields []string, projects []*models.Project) {
-	rows := sqlmock.NewRows(fields)
-
-	for _, p := range projects {
-		rows.AddRow(p.ID, p.Name, p.Version, p.CreatedAt, p.UpdatedAt)
-	}
-	s.mock.ExpectQuery(fixedSql(sql)).WillReturnRows(rows)
-}
-
 func (s *Suite) TestProjectRepo_GetProjects() {
-	sql := "SELECT * FROM `projects`"
+	sqs := "SELECT * FROM `projects`"
 	fields := []string{"id", "name", "version", "created_at", "updated_at"}
-	projects := []*models.Project{p2}
-
-	mockQuerySql(s, sql, fields, projects)
-
+	projects := []*models.Project{p2, p3}
+	mockQuerySql(s, sqs, fields, projects)
 	projects, err := s.repository.GetProjects()
+
 	require.NoError(s.T(), err)
-	require.Nil(s.T(), deep.Equal(projects[0], p2))
+	require.Nil(s.T(), deep.Equal(projects[1], p3))
 }
 
 func (s *Suite) TestProjectRepo_GetByID() {
-	sql := "SELECT * FROM `projects`  WHERE (id = ?) ORDER BY `projects`.`id` ASC LIMIT 1"
+	sqs := "SELECT * FROM `projects`  WHERE (id = ?) ORDER BY `projects`.`id` ASC LIMIT 1"
 	fields := []string{"id", "name", "version", "created_at", "updated_at"}
 	projects := []*models.Project{p1}
-	mockQuerySql(s, sql, fields, projects)
+	mockQuerySql(s, sqs, fields, projects)
 	project, err := s.repository.GetByID("1")
 
 	require.NoError(s.T(), err)
@@ -123,9 +130,10 @@ func (s *Suite) TestProjectRepo_GetByID() {
 }
 
 func (s *Suite) TestProjectRepo_UpdateProject() {
-	sql := "UPDATE `projects` SET `created_at` = ?, `id` = ?, `name` = ?, `updated_at` = ?, `version` = ?  WHERE `projects`.`id` = ?"
+	sqs := "UPDATE `projects` SET `created_at` = ?, `id` = ?, `name` = ?, `updated_at` = ?, `version` = ?  " +
+		"WHERE `projects`.`id` = ?"
 	args := []driver.Value{sqlmock.AnyArg(), p2.ID, p2.Name, sqlmock.AnyArg(), p2.Version, p2.ID}
-	mockExecSql(s, sql, args...)
+	mockExecSql(s, sqs, args...)
 	project, err := s.repository.UpdateProject(p2)
 
 	require.NoError(s.T(), err)
@@ -134,9 +142,9 @@ func (s *Suite) TestProjectRepo_UpdateProject() {
 }
 
 func (s *Suite) TestProjectRepo_DeleteProject() {
-	sql := "DELETE FROM `projects` WHERE (id = ?)"
+	sqs := "DELETE FROM `projects` WHERE (id = ?)"
 	args := []driver.Value{p2.ID}
-	mockExecSql(s, sql, args...)
+	mockExecSql(s, sqs, args...)
 	result, err := s.repository.DeleteProject(p2.ID)
 
 	require.NoError(s.T(), err)
