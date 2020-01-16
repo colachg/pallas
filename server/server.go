@@ -4,8 +4,8 @@ import (
 	"github.com/colachg/pallas/graphql"
 	"github.com/colachg/pallas/mysql"
 	"github.com/jinzhu/gorm"
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"log"
 
 	"github.com/99designs/gqlgen/handler"
@@ -43,7 +43,9 @@ func main() {
 
 	//start echo server
 	e := echo.New()
+	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+
 	e.POST("/query", graphqlHandler(db))
 	e.GET("/", playgroundHandler())
 	e.Logger.Fatal(e.Start(":" + defaultPort))

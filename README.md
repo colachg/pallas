@@ -6,6 +6,8 @@ This project is a practice of learning golang and graphql.Soon I want to create 
 - migrate
 - gorm
 - sqlmock
+- echo
+- go-sqlmock
  
 ## Get start
 1. `mkdir pallas`
@@ -22,8 +24,8 @@ This project is a practice of learning golang and graphql.Soon I want to create 
 3. `migrate -source file://path/to/migrations -database mysql://user:password@tcp(host:port)/dbname down`
 
 ## Todo
-- [ ] Add `echo` web framework
-- [ ] Refactor test suites
+- [x] Add `echo` web framework
+- [x] Refactor test suites
 - [ ] Add auth middleware
 - [ ] Update README.md
 - [ ] Dataloaden
