@@ -26,4 +26,5 @@ This project is a practice of learning golang and graphql.Soon I want to create 
 - [ ] Refactor test suites
 - [ ] Add auth middleware
 - [ ] Update README.md
+- [ ] Dataloaden
 - [ ] Write tutorial
