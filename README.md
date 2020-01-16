@@ -1,7 +1,12 @@
 # Pallas
+This project is a practice of learning golang and graphql.Soon I want to create a tutorial of the combo I used in this.
 
-## Usage
-Todo
+## Tools
+- gqlgen
+- migrate
+- gorm
+- sqlmock
+ 
 ## Get start
 1. `mkdir pallas`
 2. `go mod init`
@@ -15,3 +20,10 @@ Todo
 1. `migrate create -ext sql -dir mysql/migrations create_projects`
 2. `migrate -source file://path/to/migrations -database mysql://user:password@tcp(host:port)/dbname up`
 3. `migrate -source file://path/to/migrations -database mysql://user:password@tcp(host:port)/dbname down`
+
+## Todo
+- [ ] Add `echo` web framework
+- [ ] Refactor test suites
+- [ ] Add auth middleware
+- [ ] Update README.md
+- [ ] Write tutorial
